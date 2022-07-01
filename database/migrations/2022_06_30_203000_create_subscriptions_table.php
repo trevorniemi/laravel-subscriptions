@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('price');
             $table->enum('frequency', ['Yearly', 'Monthly']);
-            $table->foreignId('company_id')->constrained();
+            $table->foreignId('company_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

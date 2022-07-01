@@ -11,12 +11,14 @@ class Customer extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $guarded = [];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-        
+
     protected $fillable = [
         'name',
         'email',
@@ -37,7 +39,5 @@ class Customer extends Model
      *
      * @var array<string, string>
      */
-    protected $casts = [
-
-    ];
+    protected $casts = [];
 }

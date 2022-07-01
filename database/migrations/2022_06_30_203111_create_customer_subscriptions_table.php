@@ -20,8 +20,8 @@ return new class extends Migration
             $table->enum('status', ['active', 'disabled']);
             $table->string('term');
             $table->integer('quantity');
-            $table->foreignId('customer_id')->constrained();
-            $table->foreignId('subscription_id')->constrained();
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('subscription_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

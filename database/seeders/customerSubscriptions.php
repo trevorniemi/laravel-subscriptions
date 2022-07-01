@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\CustomerSubscription;
 
-class customer_subscriptions extends Seeder
+class customerSubscriptions extends Seeder
 {
     /**
      * Run the database seeds.

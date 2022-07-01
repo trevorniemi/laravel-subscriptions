@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\CustomerResource;
+use App\Jobs\ImportCustomers;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Validation\Validator;
 
 class CustomerController extends BaseController
 {
@@ -20,6 +23,7 @@ class CustomerController extends BaseController
 
         return $this->sendResponse(CustomerResource::collection($products), 'Customers retrieved successfully.');
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -99,5 +103,39 @@ class CustomerController extends BaseController
         $customer->delete();
 
         return $this->sendResponse([], 'Customer deleted successfully.');
+    }
+
+    public function customer()
+    {
+        return view('customer');
+    }
+
+    /**
+     * Upload customer CSV with queue
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * 
+     * 
+     **/
+    public function upload(Request $request)
+    {
+        if ($request->has('csv')) {
+
+            $csv    = file($request->csv);
+            $chunks = array_chunk($csv, 1000);
+            $header = [];
+            $batch  = Bus::batch([])->dispatch();
+
+            foreach ($chunks as $key => $chunk) {
+                $data = array_map('str_getcsv', $chunk);
+                if ($key == 0) {
+                    $header = $data[0];
+                    unset($data[0]);
+                }
+                $batch->add(new ImportCustomers($data, $header));
+            }
+            return $batch;
+        }
+        return "Please upload a .csv file";
     }
 }
