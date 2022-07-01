@@ -24,6 +24,8 @@ class CustomerSubscription extends Model
         'frequency',
         'term',
         'price',
+        'name',
+        'customer_name',
     ];
 
     /**

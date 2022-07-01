@@ -16,7 +16,7 @@ class customer_subscriptions extends Seeder
     public function run()
     {
         CustomerSubscription::factory()
-        ->count(5000)
+        ->count(200)
         ->create();
     }
 }

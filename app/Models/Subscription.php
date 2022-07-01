@@ -22,6 +22,8 @@ class Subscription extends Model
         'price',
         'frequency',
         'company_id',
+        'company_name',
+        'id',
     ];
 
     /**
