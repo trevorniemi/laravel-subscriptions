@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\CustomerSubscription;
 
 class Customer extends Model
 {
@@ -40,4 +41,12 @@ class Customer extends Model
      * @var array<string, string>
      */
     protected $casts = [];
+
+    /**
+     * Get the subscriptions for the customer.
+     */
+    public function customerSubscriptions()
+    {
+        return $this->hasMany(CustomerSubscription::class);
+    }
 }

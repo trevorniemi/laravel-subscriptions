@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CustomerSubscription;
+use App\Models\Customer;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\CustomerSubscriptionsResource;
 use Illuminate\Validation\Validator;
@@ -57,11 +58,7 @@ class CustomerSubscriptionController extends BaseController
 
     public function byCustomer($id)
     {
-        $customerSubscriptions = CustomerSubscription::join('subscriptions', 'customer_subscriptions.subscription_id', '=', 'subscriptions.id')
-            ->join('customers', 'customer_subscriptions.customer_id', '=', 'customers.id')
-            ->where('customer_subscriptions.customer_id', '=', $id)
-            ->get(['customer_subscriptions.*', 'subscriptions.name as name', 'customers.name as customer_name']);
-
+        $customerSubscriptions = Customer::find($id)->customerSubscriptions;
 
         if (is_null($customerSubscriptions)) {
             return $this->sendError('CustomerSubscription not found.');

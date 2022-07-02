@@ -19,6 +19,7 @@ class CustomerSubscription extends Model
     
     protected $fillable = [
         'subscription_id',
+        'customer_id',
         'quantity',
         'status',
         'frequency',
@@ -34,6 +35,7 @@ class CustomerSubscription extends Model
      * @var array<int, string>
      */
     protected $hidden = [
+
     ];
 
     /**
