@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Subscription;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\SubscriptionResource;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class SubscriptionController extends BaseController
 {
@@ -35,7 +35,6 @@ class SubscriptionController extends BaseController
 
         $validator = Validator::make($input, [
             'name' => 'required',
-            'detail' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -81,15 +80,31 @@ class SubscriptionController extends BaseController
 
         $validator = Validator::make($input, [
             'name' => 'required',
-            'detail' => 'required'
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $subscription->name = $input['name'];
-        $subscription->detail = $input['detail'];
+        if(isset($input['name'])) {
+            $subscription->name = $input['name'];
+        }
+
+        if(isset($input['price'])) {
+            $subscription->price = $input['price'];
+        }
+
+
+        if(isset($input['frequency'])) {
+            $subscription->frequency = $input['frequency'];
+        }
+
+
+        if(isset($input['company_id'])) {
+            $subscription->company_id = $input['company_id'];
+        }
+
+
         $subscription->save();
 
         return $this->sendResponse(new SubscriptionResource($subscription), 'Subscription updated successfully.');

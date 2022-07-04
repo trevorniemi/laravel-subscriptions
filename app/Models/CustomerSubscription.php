@@ -18,6 +18,7 @@ class CustomerSubscription extends Model
      */
     
     protected $fillable = [
+        'id',
         'subscription_id',
         'customer_id',
         'quantity',

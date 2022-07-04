@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\CustomerResource;
 use App\Jobs\ImportCustomers;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends BaseController
 {
@@ -36,7 +36,6 @@ class CustomerController extends BaseController
 
         $validator = Validator::make($input, [
             'name' => 'required',
-            'detail' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -77,16 +76,21 @@ class CustomerController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $customer->name = $input['name'];
-        $customer->detail = $input['detail'];
+
+        if(isset($input['name'])) {
+            $customer->name = $input['name'];
+        }
+
+        if(isset($input['email'])) {
+            $customer->email = $input['email'];
+        }
+
         $customer->save();
 
         return $this->sendResponse(new CustomerResource($customer), 'Customer updated successfully.');

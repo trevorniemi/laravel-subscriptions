@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\CompanyResource;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Customer;
 
 class CompanyController extends BaseController
 {
@@ -32,7 +34,6 @@ class CompanyController extends BaseController
 
         $validator = Validator::make($input, [
             'name' => 'required',
-            'detail' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -74,7 +75,6 @@ class CompanyController extends BaseController
 
         $validator = Validator::make($input, [
             'name' => 'required',
-            'detail' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -82,7 +82,6 @@ class CompanyController extends BaseController
         }
 
         $company->name = $input['name'];
-        $company->detail = $input['detail'];
         $company->save();
 
         return $this->sendResponse(new CompanyResource($company), 'Company updated successfully.');

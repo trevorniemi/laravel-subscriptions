@@ -7,7 +7,7 @@ use App\Models\CustomerSubscription;
 use App\Models\Customer;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\CustomerSubscriptionsResource;
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerSubscriptionController extends BaseController
 {
@@ -36,8 +36,7 @@ class CustomerSubscriptionController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
+            
         ]);
 
         if ($validator->fails()) {
@@ -102,16 +101,40 @@ class CustomerSubscriptionController extends BaseController
         $input = $request->all();
 
         $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $customerSubscription->name = $input['name'];
-        $customerSubscription->detail = $input['detail'];
+        if(isset($input['frequency'])) {
+            $customerSubscription->frequency = $input['frequency'];
+        }
+
+        if(isset($input['subscription_id'])) {
+            $customerSubscription->subscription_id = $input['subscription_id'];
+        }
+
+        if(isset($input['customer_id'])) {
+            $customerSubscription->customer_id = $input['customer_id'];
+        }
+
+        if(isset($input['quantity'])) {
+            $customerSubscription->quantity = $input['quantity'];
+        }
+
+        if(isset($input['status'])) {
+            $customerSubscription->status = $input['status'];
+        }
+
+        if(isset($input['term'])) {
+            $customerSubscription->term = $input['term'];
+        }
+
+        if(isset($input['price'])) {
+            $customerSubscription->price = $input['price'];
+        }
+
         $customerSubscription->save();
 
         return $this->sendResponse(new CustomerSubscriptionsResource($customerSubscription), 'CustomerSubscription updated successfully.');
