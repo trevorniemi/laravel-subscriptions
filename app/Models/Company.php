@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Subscription;
 
 class Company extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     /**
      * The attributes that are mass assignable.
@@ -47,5 +47,20 @@ class Company extends Model
     public function subscriptions()
     {
         return $this->hasMany(Subscription::class);
+    }
+
+    public function customerSubscriptions()
+    {
+        return $this->hasManyThrough(CustomerSubscription::class, Subscription::class);
+    }
+
+    public function customers()
+    {
+        return $this->hasManyDeep(Customer::class, [CustomerSubscription::class, Subscription::class],[
+           
+            'subscription_id', 
+            'company_id', 
+            'id',
+         ]);
     }
 }

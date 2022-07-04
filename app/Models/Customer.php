@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\CustomerSubscription;
 
 class Customer extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
+    use \Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
     protected $guarded = [];
 
@@ -48,5 +48,13 @@ class Customer extends Model
     public function customerSubscriptions()
     {
         return $this->hasMany(CustomerSubscription::class);
+    }
+
+    public function company() {
+        return $this->hasManyDeep(Company::class, [Subscription::class, CustomerSubscription::class],[
+            'company_id', 
+            'subscription_id', 
+            'id',
+         ]);
     }
 }
